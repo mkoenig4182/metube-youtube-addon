@@ -10,6 +10,7 @@
     "https://ytdl.marcelkoenig.de/*"
   ],
   "background": {
+    "scripts": ["background.js"],
     "service_worker": "background.js"
   },
   "content_scripts": [
@@ -21,12 +22,12 @@
       "css": ["styles.css"]
     }
   ],
-  "web_accessible_resources": [
-    {
-      "resources": ["button.jpg"],
-      "matches": ["https://www.youtube.com/*"]
-    }
-  ],
+"web_accessible_resources": [
+  {
+    "resources": ["button.svg"],
+    "matches": ["https://www.youtube.com/*", "https://youtube.com/*"]
+  }
+],
   "browser_specific_settings": {
     "gecko": {
       "id": "metube-addon@marcelkoenig.de",

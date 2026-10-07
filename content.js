@@ -1,4 +1,6 @@
-﻿function injectMeTubeButton() {
+﻿// Cross-Browser Kompatibilität sicherstellen
+const browserAPI = typeof browser !== "undefined" ? browser : chrome;
+function injectMeTubeButton() {
   if (document.getElementById("metube-download-btn")) return;
 
   const ownerContainer = document.querySelector("ytd-watch-metadata #owner, #owner");
@@ -8,8 +10,8 @@
   button.id = "metube-download-btn";
   button.className = "metube-img-btn";
   
-  const imgUrl = chrome.runtime.getURL("button.jpg");
-  button.innerHTML = `<img src="${imgUrl}" alt="MeTube Download" />`;
+  const imgUrl = browserAPI.runtime.getURL("button.svg");
+button.innerHTML = `<img src="${imgUrl}" alt="MeTube Download" />`;
 
   button.addEventListener("click", (e) => {
     e.preventDefault();

@@ -1,4 +1,6 @@
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+const browserAPI = typeof browser !== "undefined" ? browser : chrome;
+
+browserAPI.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "sendToMeTube") {
     fetch("https://ytdl.marcelkoenig.de/add", {
       method: "POST",
@@ -22,6 +24,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       sendResponse({ success: false, error: error.toString() });
     });
 
-    return true; // Wichtig fuer asynchrone sendResponse
+    return true; // Wichtig für asynchrone Antworten
   }
 });
