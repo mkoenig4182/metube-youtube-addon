@@ -18,9 +18,6 @@
       "css": ["styles.css"]
     }
   ],
-  "action": {
-    "default_icon": "icon128.png"
-  },
   "browser_specific_settings": {
     "gecko": {
       "id": "metube-addon@marcelkoenig.de",
