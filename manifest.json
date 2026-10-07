@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Send to MeTube",
   "version": "1.0.0",
-  "description": "Fügt einen Button auf YouTube ein, um Videos direkt an die eigene MeTube-Instanz zu senden.",
+  "description": "Fuegt einen Button auf YouTube ein, um Videos direkt an die eigene MeTube-Instanz zu senden.",
   "permissions": [
     "activeTab"
   ],
@@ -20,5 +20,11 @@
   ],
   "action": {
     "default_icon": "icon128.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "metube-addon@marcelkoenig.de",
+      "strict_min_version": "109.0"
+    }
   }
 }
