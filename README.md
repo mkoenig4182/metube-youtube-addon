@@ -1,40 +1,62 @@
 # Send to MeTube
 
-Ein Browser-Add-on für Firefox, Chrome, Edge und weitere Chromium-Browser, das auf YouTube-Videoseiten einen Button einfügt, um Videos direkt an die eigene MeTube-Instanz zu senden.
+Ein plattformübergreifendes Browser-Add-on (Manifest V3) für **Mozilla Firefox**, **Google Chrome**, **Microsoft Edge** und weitere Chromium-Browser, das einen Download-Button direkt in die YouTube-Bedienoberfläche einbettet. Ein Klick sendet die URL des aktuellen Videos automatisch an eine eigene [MeTube](https://github.com/alexta69/metube)-Instanz.
+
+![MeTube YouTube Addon Preview](preview.jpg)
 
 ---
 
-## 🛠️ Installation
+## 🛠️ Features
 
-### 🦊 Firefox
+- **Cross-Browser Support**: Ein einziger Codebase-Standard für Chrome, Edge, Firefox, Brave und Opera.
+- **Nahtlose Integration**: Fügt sich optisch direkt neben dem Abonnieren-Button auf YouTube ein.
+- **CORS-Bypass**: Die Anfragen werden über ein Background-Script (Service Worker) abgewickelt, um Cross-Origin-Blockaden zuverlässig zu vermeiden.
+- **SPA-Kompatibel**: Erkennt Seitenwechsel auf YouTube automatisch via `MutationObserver`.
 
-Für Firefox ist die Erweiterung signiert und kann direkt über die `.xpi`-Datei installiert werden:
+---
 
-1. Lade die Datei `send_to_metube.xpi` (oder die entsprechende `.xpi`-Datei aus den Releases / Downloads) herunter.
+## 📥 Installation
+
+### 🦊 Mozilla Firefox (Dauerhafte Installation)
+
+Für Firefox steht das von Mozilla signierte Paket bereit. Dadurch bleibt die Erweiterung auch nach jedem Browser-Neustart dauerhaft installiert:
+
+1. Lade die Datei **`metube-youtube-addon-1.0.0.xpi`** herunter.
 2. Öffne Firefox.
-3. Ziehe die gedownloadete `.xpi`-Datei per **Drag & Drop** in ein beliebiges Firefox-Fenster.
-4. Bestätige die Sicherheitsabfrage mit **Hinzufügen**.
-
-> **Hinweis:** Da die Datei von Mozilla signiert ist, bleibt das Add-on dauerhaft und dauerhaft aktiv installiert (auch nach Browser-Neustarts).
+3. Ziehe die Datei `metube-youtube-addon-1.0.0.xpi` per **Drag & Drop** in ein beliebiges Firefox-Fenster.
+4. Bestätige den Dialog mit **Hinzufügen**.
+5. *(Optional)* Falls YouTube bereits geöffnet war, lade die Seite einmal mit `Strg` + `Shift` + `R` neu.
 
 ---
 
-### 🌐 Chrome, Microsoft Edge, Brave, Opera (Chromium)
+### 🌐 Google Chrome, Microsoft Edge, Brave & Opera (Chromium)
 
-In Chromium-basierten Browsern lässt sich das Add-on im Entwicklermodus aus dem Quellcode laden:
+In Chromium-basierten Browsern wird das Add-on im Entwicklermodus installiert:
 
-1. Lade das Repository als ZIP-Datei herunter und entpacke sie in einen beliebigen Ordner (oder klone das Repository).
-2. Öffne die Erweiterungsverwaltung in deinem Browser:
-   - **Chrome:** `chrome://extensions/`
+1. Klone dieses Repository oder lade es als ZIP-Archiv herunter und entpacke es.
+2. Öffne die Erweiterungsverwaltung im Browser:
+   - **Google Chrome:** `chrome://extensions/`
    - **Microsoft Edge:** `edge://extensions/`
    - **Brave:** `brave://extensions/`
    - **Opera:** `opera://extensions/`
 3. Aktiviere oben rechts den **Entwicklermodus** (*Developer mode*).
 4. Klicke auf **Entpackte Erweiterung laden** (*Load unpacked*).
-5. Wähle den Ordner aus, der die `manifest.json` enthält.
+5. Wähle den Projektordner aus, in dem sich die `manifest.json` befindet.
 
 ---
 
 ## ⚙️ Konfiguration
 
-Standardmäßig sendet das Add-on Anfragen an die konfigurierte MeTube-URL. Bei Bedarf kann die URL in der `background.js` angepasst werden.
+Passe bei Bedarf die Ziel-URL deiner MeTube-Instanz in der `background.js` sowie in der `manifest.json` unter `host_permissions` an:
+
+- **MeTube-Endpoint**: `https://ytdl.marcelkoenig.de/add`
+
+---
+
+## 📁 Projektstruktur
+
+```text
+metube-youtube-addon/
+├── manifest.json                  # Manifest V3 Konfiguration für Chromium & Firefox
+├── background.js                # Background Service Worker für API-Requests (CORS Bypass)
+├── content.js                   # DOM-Injection & Observer für die YouTube-Ober
