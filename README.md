@@ -1,26 +1,22 @@
-# 🎬 YouTube to MeTube Chrome Extension
+# MeTube YouTube Addon
 
-Eine schlanke Manifest V3 Browser-Erweiterung, die auf YouTube-Videoseiten einen **"MeTube"**-Button einfügt. Ein Klick sendet das aktuelle Video direkt an eine eigene [MeTube](https://github.com/alexta69/metube)-Instanz (yt-dlp GUI) im Hintergrund.
+Ein plattformübergreifendes Browser-Add-on (Manifest V3) für **Microsoft Edge**, **Google Chrome** und **Mozilla Firefox**, das einen Download-Button direkt in die YouTube-Bedienoberfläche einbettet. Ein Klick sendet die URL des aktuellen Videos automatisch an eine eigene [MeTube](https://github.com/alexta69/metube)-Instanz.
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Manifest](https://img.shields.io/badge/manifest-v3-green.svg)
-![Platform](https://img.shields.io/badge/platform-Chrome%20%7C%20Brave%20%7C%20Edge%20%7C%20Firefox-orange.svg)
+![MeTube YouTube Addon Preview](preview.jpg)
 
 ---
 
-## 🚀 Features
+## Features
 
-- **Nahtlose Integration:** Fügt sich optisch perfekt in die native YouTube-Aktionsleiste unterhalb des Video-Players ein.
-- **SPA-Support:** Funktioniert zuverlässig beim Navigieren zwischen Videos ohne Seiten-Reload (via `MutationObserver`).
-- **Visuelles Feedback:** Zeigt Statuszustände an (*Sende...*, *Gesendet! ✓*, *Fehler!*).
-- **Lightweight:** Keine unnötigen Abhängigkeiten, reines Vanilla JavaScript und CSS.
+- **Cross-Browser Support**: Ein einziger Codebase-Standard für Edge, Chrome und Firefox.
+- **Nahtlose Integration**: Fügt sich optisch direkt neben dem Abonnieren-Button auf YouTube ein.
+- **CORS-Bypass**: Die Anfragen werden über ein Background-Script (Service Worker) abgewickelt, um Cross-Origin-Blockaden zuverlässig zu vermeiden.
+- **SPA-Kompatibel**: Erkennt Seitenwechsel auf YouTube automatisch via `MutationObserver`.
 
 ---
 
-## 🛠️ Installation
+## Installation & Einrichtung
 
-Da es sich um eine private Erweiterung handelt, wird sie als entpackte Erweiterung im Entwicklermodus installiert:
-
-1. **Repository klonen oder ZIP herunterladen:**
-   ```bash
-   git clone [https://github.com/mkoenig4182/metube-youtube-addon.git](https://github.com/mkoenig4182/metube-youtube-addon.git)
+### 1. Repository klonen
+```bash
+git clone [https://github.com/mkoenig4182/metube-youtube-addon.git](https://github.com/mkoenig4182/metube-youtube-addon.git)
