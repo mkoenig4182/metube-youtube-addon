@@ -2,7 +2,7 @@
 
 Ein plattformübergreifendes Browser-Add-on (Manifest V3) für **Microsoft Edge**, **Google Chrome** und **Mozilla Firefox**, das einen Download-Button direkt in die YouTube-Bedienoberfläche einbettet. Ein Klick sendet die URL des aktuellen Videos automatisch an eine eigene [MeTube](https://github.com/alexta69/metube)-Instanz.
 
-![MeTube YouTube Addon Preview](preview.jpg)
+![MeTube YouTube Addon Preview](preview.png)
 
 ---
 
