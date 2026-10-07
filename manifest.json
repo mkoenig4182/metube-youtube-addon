@@ -9,6 +9,9 @@
   "host_permissions": [
     "https://ytdl.marcelkoenig.de/*"
   ],
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
       "matches": [
@@ -16,6 +19,12 @@
       ],
       "js": ["content.js"],
       "css": ["styles.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["button.jpg"],
+      "matches": ["https://www.youtube.com/*"]
     }
   ],
   "browser_specific_settings": {

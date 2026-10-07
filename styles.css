@@ -1,30 +1,40 @@
-#metube-download-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #ff0000;
-  color: #ffffff;
-  border: none;
-  border-radius: 18px;
-  padding: 0 16px;
-  height: 36px;
-  font-family: "Roboto", "Arial", sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  margin-left: 8px;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+/* Stellt sicher, dass der Owner-Container Inline-Flex nutzt */
+ytd-watch-metadata #owner, #owner {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
 }
 
-#metube-download-btn:hover {
-  background-color: #cc0000;
+/* Button-Styling neben dem Abonnieren-Button */
+#metube-download-btn.metube-img-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin-left: 12px !important;
+  cursor: pointer !important;
+  vertical-align: middle !important;
+  z-index: 9999 !important;
+  flex-shrink: 0 !important;
 }
 
-#metube-download-btn:active {
+/* Bild-Styling innerhalb des Buttons */
+#metube-download-btn.metube-img-btn img {
+  height: 36px !important;
+  width: auto !important;
+  border-radius: 18px !important;
+  display: block !important;
+  object-fit: contain !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#metube-download-btn.metube-img-btn:hover {
+  opacity: 0.85 !important;
+  transform: scale(1.03);
+}
+
+#metube-download-btn.metube-img-btn:active {
   transform: scale(0.96);
-}
-
-#metube-download-btn.loading {
-  opacity: 0.8;
-  cursor: wait;
 }
