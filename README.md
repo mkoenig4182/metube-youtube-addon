@@ -21,9 +21,9 @@ Ein plattformübergreifendes Browser-Add-on (Manifest V3) für **Mozilla Firefox
 
 Für Firefox steht das von Mozilla signierte Paket bereit. Dadurch bleibt die Erweiterung auch nach jedem Browser-Neustart dauerhaft installiert:
 
-1. Lade die Datei **`metube-youtube-addon-1.0.0.xpi`** herunter.
+1. Lade die Datei **`send-to-metube-latest.xpi`** herunter.
 2. Öffne Firefox.
-3. Ziehe die Datei `metube-youtube-addon-1.0.0.xpi` per **Drag & Drop** in ein beliebiges Firefox-Fenster.
+3. Ziehe die Datei `send-to-metube-latest.xpi` per **Drag & Drop** in ein beliebiges Firefox-Fenster.
 4. Bestätige den Dialog mit **Hinzufügen**.
 5. *(Optional)* Falls YouTube bereits geöffnet war, lade die Seite einmal mit `Strg` + `Shift` + `R` neu.
 
