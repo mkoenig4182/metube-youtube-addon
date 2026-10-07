@@ -1,0 +1,30 @@
+#metube-download-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ff0000;
+  color: #ffffff;
+  border: none;
+  border-radius: 18px;
+  padding: 0 16px;
+  height: 36px;
+  font-family: "Roboto", "Arial", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+#metube-download-btn:hover {
+  background-color: #cc0000;
+}
+
+#metube-download-btn:active {
+  transform: scale(0.96);
+}
+
+#metube-download-btn.loading {
+  opacity: 0.8;
+  cursor: wait;
+}
