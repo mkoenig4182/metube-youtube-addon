@@ -1,54 +1,84 @@
 # Send to MeTube (Browser Extension)
 
-Eine schlanke, plattformübergreifende Browser-Erweiterung (Manifest V3) für Firefox und Chromium-basierte Browser, um YouTube-Videos mit nur einem Klick direkt an eine eigene [MeTube](https://github.com/alexta69/metube)-Instanz zu senden.
+Eine schlanke, plattformübergreifend einsetzbare Browser-Erweiterung (Manifest V3) für Firefox und Chromium-basierte Browser, um YouTube-Videos mit flexiblen Formatoptionen direkt an eine eigene [MeTube](https://github.com/alexta69/metube)-Instanz zu senden.
 
 ---
 
-## Funktionen
+## 🎨 Funktionen
 
-* **Direktzugriff über Toolbar-Icon:** Ein Klick auf das Erweiterungs-Icon in der Symbolleiste sendet das aktive YouTube-Video direkt an MeTube.
-* **Visuelles Feedback:** Direktes Feedback auf dem Icon (grünes Häkchen bei Erfolg, rotes Symbol bei Fehlern).
-* **Einstellungsseite (Options UI):** Beim ersten Klick (oder falls noch keine URL hinterlegt ist) öffnet sich automatisch die Konfigurationsseite, auf der die Basis-URL deiner MeTube-Instanz hinterlegt werden kann.
-* **Plattformübergreifend:** Unterstützt Firefox und Google Chrome / Edge.
+* **Schnell-Menü bei Linksklick:**
+  * 🎬 **als MP4 speichern:** Überträgt das Video im MP4-Format an MeTube.
+  * 🎵 **als MP3 speichern:** Extrahiert und speichert nur die Audiospur als MP3.
+  * 🌐 **MeTube aufrufen:** Öffnet deine MeTube-Weboberfläche direkt in einem neuen Tab.
+  * ⚙️ **Einstellungen:** Schneller Zugriff auf die Konfigurationsseite.
+
+![Aktions-Menü](docs/images/popup-menu.png)
+
+* **Kontextmenü bei Rechtsklick:** Ein Rechtsklick auf das Erweiterungssymbol bietet jederzeit die Option *„MeTube-Instanz öffnen“*.
+* **In-Page Feedback (Toast-Benachrichtigung):** Nach der Übertragung poppt direkt oben rechts auf der YouTube-Seite eine visuelle Bestätigung auf.
+
+![Toast-Benachrichtigung](docs/images/toast-notification.png)
+
+* **Sichere Berechtigungsverwaltung:** Integrierter Berechtigungs-Checker auf der Einstellungsseite, um den Host-Zugriff auf deine MeTube-Domain mit einem Klick freizugeben.
+* **Auto-Update Support:** Unterstützt automatische Updates über eine eigene `updates.json`.
 
 ---
 
-## Installation
+## 🚀 Installation
 
-Du kannst die Erweiterung auf zwei Wegen installieren:
+Du kannst die Erweiterung auf zwei Arten installieren:
 
 ### Methode 1: Fertige `.xpi`-Datei (Empfohlen für Firefox)
-1. Lade die aktuelle **`send-to-metube-latest.xpi`** (bzw. die `.xpi` aus den Releases) herunter.
-2. Öffne in Firefox `about:debugging#/runtime/this-firefox`.
+1. Lade die aktuelle **`send-to-metube-latest.xpi`** aus den [Releases](https://github.com/mkoenig4182/metube-youtube-addon/releases) herunter.
+2. Öffne in Firefox die Adresse `about:debugging#/runtime/this-firefox`.
 3. Klicke auf **„Temporäre Add-on-Datei laden …“** und wähle die heruntergeladene `.xpi`-Datei aus.
 
 ### Methode 2: Aus dem Quellcode (Entwicklermodus / ZIP)
-1. Lade das Repository als [ZIP-Datei von GitHub herunter](https://github.com/mkoenig4182/metube-youtube-addon/archive/refs/heads/main.zip) und entpacke es.
+1. Lade das Repository als ZIP-Datei herunter und entpacke es.
 2. **In Firefox:**
    * Gehe auf `about:debugging#/runtime/this-firefox`.
-   * Klicke auf **„Temporäre Add-on-Datei laden …“** und wähle die `manifest.json` aus dem entpackten Ordner aus.
+   * Klicke auf **„Temporäre Add-on-Datei laden …“** und wähle die `manifest.json` aus.
 3. **In Google Chrome / Edge:**
-   * Gehe auf `chrome://extensions/` bzw. `edge://extensions/`.
+   * Gehe zu `chrome://extensions/` bzw. `edge://extensions/`.
    * Aktiviere oben rechts den **Entwicklermodus**.
-   * Klicke auf **„Entpackte Erweiterung laden“** und wähle den Ordner aus.
+   * Klicke auf **„Entpackte Erweiterung laden“** und wähle den entpackten Ordner aus.
 
 ---
 
-## Ersteinrichtung
+## ⚙️ Ersteinrichtung & Berechtigungen
 
-1. Klicke nach der Installation auf das MeTube-Erweiterungssymbol in deiner Browser-Leiste.
-2. Da noch keine URL hinterlegt ist, öffnet sich automatisch die Einstellungsseite.
-3. Trage dort die Basis-URL deiner MeTube-Instanz ein (z. B. `https://ytdl.deine-domain.de`) und klicke auf **Speichern**.
-4. Ab sofort sendet ein Klick auf das Symbol das aktuell geöffnete YouTube-Video direkt an deinen Downloader!
+1. Nach der Installation öffnet sich automatisch die Einstellungsseite (falls nicht, klicke auf das Erweiterungs-Icon).
+2. Gib die Basis-URL deiner MeTube-Instanz ein (z. B. `https://ytdl.deine-domain.de`).
+3. Klicke auf **Speichern**. 
+4. **Berechtigung erteilen:** Firefox fragt beim Speichern einmalig nach der Freigabe für deine MeTube-Domain. Bestätige den Dialog mit **Hinzufügen / Erlauben**.
+
+![Einstellungsseite](docs/images/options-page.png)
 
 ---
 
-## Projektstruktur
+## 📖 Bedienung
+
+### 1. Video übertragen
+1. Öffne ein beliebiges YouTube-Video (`https://www.youtube.com/watch?v=...`).
+2. Klicke mit der **linken Maustaste** auf das MeTube-Symbol in der Symbolleiste.
+3. Wähle **als MP4 speichern** oder **als MP3 speichern**.
+4. Oben rechts auf der YouTube-Seite erscheint eine grüne Erfolgsmeldung.
+
+### 2. MeTube-Instanz öffnen
+* **Möglichkeit A:** Linksklick auf das Symbol -> **MeTube aufrufen**.
+* **Möglichkeit B:** **Rechtsklick** auf das Symbol in der Browser-Toolbar -> **MeTube-Instanz öffnen**.
+
+---
+
+## 📁 Projektstruktur
 
 ```text
 metube-youtube-addon/
 ├── manifest.json      # Erweiterungs-Konfiguration (Manifest V3)
-├── background.js      # Service Worker für API-Kommunikation und Klick-Handling
-├── options.html       # Einstellungsseite für die MeTube-URL
-├── options.js         # Logik zum Speichern der Einstellungen
+├── background.js      # Service Worker & Kontextmenü-Handling
+├── popup.html         # Aktions-Menü bei Linksklick
+├── popup.js           # Format-Auswahl & API-Kommunikation
+├── options.html       # Einstellungsseite & Berechtigungs-UI
+├── options.js         # Speichern der Instanz-URL & Rechtemanagement
+├── updates.json       # Auto-Update-Manifest für Firefox
 └── icon.svg           # Vektor-Icon der Erweiterung
