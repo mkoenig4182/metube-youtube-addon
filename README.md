@@ -12,12 +12,12 @@ Eine schlanke, plattformübergreifend einsetzbare Browser-Erweiterung (Manifest 
   * 🌐 **MeTube aufrufen:** Öffnet deine MeTube-Weboberfläche direkt in einem neuen Tab.
   * ⚙️ **Einstellungen:** Schneller Zugriff auf die Konfigurationsseite.
 
-![Aktions-Menü](docs/images/popup-menu.png)
+![Aktions-Menü](img/prev_menu.png)
 
 * **Kontextmenü bei Rechtsklick:** Ein Rechtsklick auf das Erweiterungssymbol bietet jederzeit die Option *„MeTube-Instanz öffnen“*.
 * **In-Page Feedback (Toast-Benachrichtigung):** Nach der Übertragung poppt direkt oben rechts auf der YouTube-Seite eine visuelle Bestätigung auf.
 
-![Toast-Benachrichtigung](docs/images/toast-notification.png)
+![Toast-Benachrichtigung](img/prev_click.png)
 
 * **Sichere Berechtigungsverwaltung:** Integrierter Berechtigungs-Checker auf der Einstellungsseite, um den Host-Zugriff auf deine MeTube-Domain mit einem Klick freizugeben.
 * **Auto-Update Support:** Unterstützt automatische Updates über eine eigene `updates.json`.
