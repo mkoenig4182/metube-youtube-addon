@@ -31,7 +31,7 @@
     "gecko": {
       "id": "metube-addon@marcelkoenig.de",
       "strict_min_version": "109.0",
-      "update_url": "https://deine-domain.de/metube-addon/updates.json",
+      "update_url": "https://github.com/mkoenig4182/metube-youtube-addon/blob/main/updates.json",
       "data_collection_permissions": {
         "required": ["none"]
       }
