@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Send to MeTube",
+  "version": "2.0.2",
+  "description": "Sendet das aktuelle YouTube-Video per Klick an eine eigene MeTube-Instanz.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "https://*.youtube.com/*",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "action": {
+    "default_icon": "icon.svg",
+    "default_title": "MeTube Optionen",
+    "default_popup": "popup.html"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "service_worker": "background.js",
+    "scripts": ["background.js"]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "metube-addon@marcelkoenig.de",
+      "strict_min_version": "109.0",
+      "update_url": "https://deine-domain.de/metube-addon/updates.json",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  }
+}
