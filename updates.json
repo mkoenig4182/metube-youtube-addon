@@ -3,7 +3,7 @@
     "metube-addon@marcelkoenig.de": {
       "updates": [
         {
-          "version": "2.0.5",
+          "version": "2.0.6",
           "update_link": "https://github.com/mkoenig4182/metube-youtube-addon/blob/main/send-to-metube-latest.xpi"
         }
       ]
