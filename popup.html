@@ -33,12 +33,22 @@
     .menu-button:hover {
       background-color: #e3e5e8;
     }
+    .menu-button.playlist {
+      background-color: #2e7d32;
+      color: #ffffff;
+    }
+    .menu-button.playlist:hover {
+      background-color: #1b5e20;
+    }
     .menu-button.primary {
       background-color: #c62828;
       color: #ffffff;
     }
     .menu-button.primary:hover {
       background-color: #b71c1c;
+    }
+    .hidden {
+      display: none;
     }
     .icon {
       margin-right: 8px;
@@ -65,6 +75,9 @@
   </button>
   <button class="menu-button" id="btnMp3">
     <span class="icon">🎵</span> als MP3 speichern
+  </button>
+  <button class="menu-button playlist hidden" id="btnPlaylist">
+    <span class="icon">📋</span> Playlist an MeTube senden
   </button>
   <button class="menu-button primary" id="btnOpenMetube">
     <span class="icon">🌐</span> MeTube aufrufen

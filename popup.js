@@ -1,5 +1,5 @@
-document.addEventListener("DOMContentLoaded", () => {
-  chrome.storage.sync.get(["metubeUrl"], (data) => {
+document.addEventListener("DOMContentLoaded", async () => {
+  chrome.storage.sync.get(["metubeUrl"], async (data) => {
     if (!data.metubeUrl) {
       chrome.runtime.openOptionsPage();
       window.close();
@@ -7,6 +7,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const baseUrl = data.metubeUrl.replace(/\/+$/, "");
+
+    // Prüfen, ob der aktive Tab eine YouTube-Playlist ist
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const btnPlaylist = document.getElementById("btnPlaylist");
+
+    if (tab && tab.url && tab.url.includes("youtube.com") && (tab.url.includes("list=") || tab.url.includes("/playlist"))) {
+      if (btnPlaylist) {
+        btnPlaylist.classList.remove("hidden");
+      }
+    }
 
     // MP4 Download (Video + Audio im MP4-Container)
     document.getElementById("btnMp4").addEventListener("click", () => {
@@ -17,6 +27,13 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("btnMp3").addEventListener("click", () => {
       sendToMetube(baseUrl, { url: "", download_type: "audio", quality: "best", format: "mp3" }, "MP3");
     });
+
+    // Playlist an MeTube senden
+    if (btnPlaylist) {
+      btnPlaylist.addEventListener("click", () => {
+        sendPlaylistToMetube(baseUrl, tab);
+      });
+    }
 
     // MeTube UI öffnen
     document.getElementById("btnOpenMetube").addEventListener("click", () => {
@@ -58,6 +75,60 @@ async function sendToMetube(baseUrl, payloadData, label) {
   } else {
     alert("Bitte öffne ein YouTube-Video, um es zu senden.");
   }
+  window.close();
+}
+
+async function sendPlaylistToMetube(baseUrl, tab) {
+  if (!tab || !tab.id) return;
+
+  try {
+    const results = await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: () => {
+        const linkElements = document.querySelectorAll(
+          'ytd-playlist-video-renderer a#video-title, a#video-title, ytd-playlist-panel-video-renderer a#wc-endpoint'
+        );
+        return Array.from(linkElements)
+          .map(a => a.href)
+          .filter(href => href && href.includes('watch?v='))
+          .map(href => href.split('&list=')[0])
+          .filter((url, index, self) => self.indexOf(url) === index);
+      }
+    });
+
+    const links = results[0]?.result || [];
+
+    if (links.length === 0) {
+      showToast(tab.id, "Keine Playlist-Videos auf der Seite gefunden.", false);
+      window.close();
+      return;
+    }
+
+    showToast(tab.id, `Sende ${links.length} Videos aus der Playlist an MeTube...`, true);
+
+    const targetApi = `${baseUrl}/add`;
+    let successCount = 0;
+
+    for (const videoUrl of links) {
+      try {
+        const response = await fetch(targetApi, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: videoUrl, quality: "best", format: "mp4" })
+        });
+        if (response.ok) successCount++;
+      } catch (e) {
+        console.error("Fehler beim Senden von", videoUrl, e);
+      }
+    }
+
+    showToast(tab.id, `Fertig! ${successCount}/${links.length} Playlist-Videos gesendet.`, true);
+
+  } catch (err) {
+    console.error("Fehler beim Auslesen der Playlist:", err);
+    showToast(tab.id, "Fehler beim Auslesen der Playlist.", false);
+  }
+
   window.close();
 }
 

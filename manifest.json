@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Send to MeTube",
-  "version": "2.0.3",
+  "version": "2.0.5",
   "description": "Sendet das aktuelle YouTube-Video per Klick an eine eigene MeTube-Instanz.",
   "permissions": [
     "activeTab",
@@ -25,7 +25,9 @@
   },
   "background": {
     "service_worker": "background.js",
-    "scripts": ["background.js"]
+    "scripts": [
+      "background.js"
+    ]
   },
   "browser_specific_settings": {
     "gecko": {
@@ -33,7 +35,9 @@
       "strict_min_version": "109.0",
       "update_url": "https://github.com/mkoenig4182/metube-youtube-addon/blob/main/updates.json",
       "data_collection_permissions": {
-        "required": ["none"]
+        "required": [
+          "none"
+        ]
       }
     }
   }

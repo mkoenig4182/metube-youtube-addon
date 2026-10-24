@@ -9,6 +9,7 @@ Eine schlanke, plattformübergreifend einsetzbare Browser-Erweiterung (Manifest 
 * **Schnell-Menü bei Linksklick:**
   * 🎬 **als MP4 speichern:** Überträgt das Video im MP4-Format an MeTube.
   * 🎵 **als MP3 speichern:** Extrahiert und speichert nur die Audiospur als MP3.
+  * 📋 **Playlist an MeTube senden:** Extrahiert alle Videos einer geöffneten YouTube-Playlist und überträgt sie direkt an MeTube (wird automatisch auf Playlist-Seiten eingeblendet).
   * 🌐 **MeTube aufrufen:** Öffnet deine MeTube-Weboberfläche direkt in einem neuen Tab.
   * ⚙️ **Einstellungen:** Schneller Zugriff auf die Konfigurationsseite.
 
@@ -58,10 +59,10 @@ Du kannst die Erweiterung auf zwei Arten installieren:
 
 ## 📖 Bedienung
 
-### 1. Video übertragen
-1. Öffne ein beliebiges YouTube-Video (`https://www.youtube.com/watch?v=...`).
+### 1. Video oder Playlist übertragen
+1. Öffne ein beliebiges YouTube-Video (`https://www.youtube.com/watch?v=...`) oder eine Playlist (`https://www.youtube.com/playlist?list=...`).
 2. Klicke mit der **linken Maustaste** auf das MeTube-Symbol in der Symbolleiste.
-3. Wähle **als MP4 speichern** oder **als MP3 speichern**.
+3. Wähle **als MP4 speichern**, **als MP3 speichern** oder **Playlist an MeTube senden**.
 4. Oben rechts auf der YouTube-Seite erscheint eine grüne Erfolgsmeldung.
 
 ### 2. MeTube-Instanz öffnen
@@ -77,8 +78,9 @@ metube-youtube-addon/
 ├── manifest.json      # Erweiterungs-Konfiguration (Manifest V3)
 ├── background.js      # Service Worker & Kontextmenü-Handling
 ├── popup.html         # Aktions-Menü bei Linksklick
-├── popup.js           # Format-Auswahl & API-Kommunikation
+├── popup.js           # Format-Auswahl, Playlist-Extraktion & API-Kommunikation
 ├── options.html       # Einstellungsseite & Berechtigungs-UI
 ├── options.js         # Speichern der Instanz-URL & Rechtemanagement
 ├── updates.json       # Auto-Update-Manifest für Firefox
 └── icon.svg           # Vektor-Icon der Erweiterung
+```

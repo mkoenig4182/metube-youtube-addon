@@ -1,76 +1,76 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Werte vorausfüllen
-  chrome.storage.sync.get(["metubeUrl"], (result) => {
-    if (result.metubeUrl) {
-      document.getElementById("metubeUrl").value = result.metubeUrl;
-      checkPermissions(result.metubeUrl);
+  const metubeUrlInput = document.getElementById("metubeUrl");
+  const saveBtn = document.getElementById("save");
+  const permStatus = document.getElementById("permStatus");
+  const requestPermBtn = document.getElementById("requestPerm");
+  const statusDiv = document.getElementById("status");
+
+  chrome.storage.sync.get(["metubeUrl"], (data) => {
+    if (data.metubeUrl) {
+      metubeUrlInput.value = data.metubeUrl;
+      checkPermissions(data.metubeUrl);
     } else {
-      document.getElementById("permStatus").textContent = "Keine MeTube-URL hinterlegt.";
+      permStatus.textContent = "Bitte gib zuerst eine gültige MeTube-URL ein und klicke auf Speichern.";
     }
   });
-});
 
-// Berechtigungsstatus prüfen
-async function checkPermissions(url) {
-  try {
-    const origin = `${new URL(url).origin}/*`;
-    const hasPerm = await chrome.permissions.contains({ origins: [origin] });
-    const permDiv = document.getElementById("permStatus");
-    if (hasPerm) {
-      permDiv.innerHTML = `✅ Zugriff auf <b>${origin}</b> ist aktiv und erlaubt.`;
-      permDiv.style.color = "#2e7d32";
-    } else {
-      permDiv.innerHTML = `⚠️ Kein direkter Zugriff auf <b>${origin}</b> erteilt.`;
-      permDiv.style.color = "#c62828";
+  saveBtn.addEventListener("click", () => {
+    let url = metubeUrlInput.value.trim();
+    if (!url) {
+      statusDiv.textContent = "Bitte eine URL eingeben!";
+      statusDiv.style.color = "#c62828";
+      return;
     }
-  } catch (e) {
-    document.getElementById("permStatus").textContent = "Ungültige URL angegeben.";
-  }
-}
+    url = url.replace(/\/+$/, "");
+    metubeUrlInput.value = url;
 
-// Einstellungen speichern
-document.getElementById("save").addEventListener("click", async () => {
-  let url = document.getElementById("metubeUrl").value.trim();
-  if (url.endsWith("/")) url = url.slice(0, -1);
-
-  try {
-    const urlPattern = `${new URL(url).origin}/*`;
-    const granted = await chrome.permissions.request({ origins: [urlPattern] });
-
-    if (granted) {
-      chrome.storage.sync.set({ metubeUrl: url }, () => {
-        const status = document.getElementById("status");
-        status.textContent = "Einstellungen & Berechtigungen gespeichert!";
-        checkPermissions(url);
-        setTimeout(() => status.textContent = "", 3000);
-      });
-    } else {
-      alert("Berechtigung wurde verweigert.");
-    }
-  } catch (e) {
-    alert("Bitte gib eine gültige URL ein.");
-  }
-});
-
-// Berechtigung manuell anfordern Button
-document.getElementById("requestPerm").addEventListener("click", async () => {
-  let url = document.getElementById("metubeUrl").value.trim();
-  if (!url) {
-    alert("Bitte zuerst eine URL eintragen.");
-    return;
-  }
-  if (url.endsWith("/")) url = url.slice(0, -1);
-
-  try {
-    const urlPattern = `${new URL(url).origin}/*`;
-    const granted = await chrome.permissions.request({ origins: [urlPattern] });
-    if (granted) {
+    chrome.storage.sync.set({ metubeUrl: url }, () => {
+      statusDiv.textContent = "Einstellungen gespeichert!";
+      statusDiv.style.color = "#2e7d32";
       checkPermissions(url);
-      alert("Berechtigung erfolgreich erteilt!");
-    } else {
-      alert("Berechtigung nicht erteilt.");
+      setTimeout(() => { statusDiv.textContent = ""; }, 3000);
+    });
+  });
+
+  requestPermBtn.addEventListener("click", () => {
+    const url = metubeUrlInput.value.trim();
+    if (!url) return;
+
+    try {
+      const urlObj = new URL(url);
+      const origin = `${urlObj.protocol}//${urlObj.hostname}/*`;
+
+      chrome.permissions.request({ origins: [origin] }, (granted) => {
+        if (granted) {
+          permStatus.textContent = `✅ Zugriff auf ${origin} ist aktiv und erlaubt.`;
+          permStatus.style.color = "#2e7d32";
+        } else {
+          permStatus.textContent = `❌ Zugriff auf ${origin} wurde abgelehnt.`;
+          permStatus.style.color = "#c62828";
+        }
+      });
+    } catch (e) {
+      alert("Ungültige URL angegeben.");
     }
-  } catch (e) {
-    alert("Fehler beim Anfordern der Berechtigung.");
+  });
+
+  function checkPermissions(url) {
+    try {
+      const urlObj = new URL(url);
+      const origin = `${urlObj.protocol}//${urlObj.hostname}/*`;
+
+      chrome.permissions.contains({ origins: [origin] }, (result) => {
+        if (result) {
+          permStatus.textContent = `✅ Zugriff auf ${origin} ist aktiv und erlaubt.`;
+          permStatus.style.color = "#2e7d32";
+        } else {
+          permStatus.textContent = `⚠️ Kein expliziter Zugriff auf ${origin} erteilt.`;
+          permStatus.style.color = "#d84315";
+        }
+      });
+    } catch (e) {
+      permStatus.textContent = "Ungültige URL-Formatierung.";
+      permStatus.style.color = "#c62828";
+    }
   }
 });
