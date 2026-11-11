@@ -8,14 +8,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const baseUrl = data.metubeUrl.replace(/\/+$/, "");
 
-    // Prüfen, ob der aktive Tab eine YouTube-Playlist ist
+    // Playlist-Erkennung: Button nur bei echten Playlist-Links einblenden
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     const btnPlaylist = document.getElementById("btnPlaylist");
+    const playlistUrl = getPlaylistUrl(tab && tab.url);
 
-    if (tab && tab.url && tab.url.includes("youtube.com") && (tab.url.includes("list=") || tab.url.includes("/playlist"))) {
-      if (btnPlaylist) {
-        btnPlaylist.classList.remove("hidden");
-      }
+    if (playlistUrl && btnPlaylist) {
+      btnPlaylist.classList.remove("hidden");
+      btnPlaylist.addEventListener("click", () => {
+        sendPlaylistToMetube(baseUrl, tab, playlistUrl);
+      });
     }
 
     // MP4 Download (Video + Audio im MP4-Container)
@@ -27,13 +29,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("btnMp3").addEventListener("click", () => {
       sendToMetube(baseUrl, { url: "", download_type: "audio", quality: "best", format: "mp3" }, "MP3");
     });
-
-    // Playlist an MeTube senden
-    if (btnPlaylist) {
-      btnPlaylist.addEventListener("click", () => {
-        sendPlaylistToMetube(baseUrl, tab);
-      });
-    }
 
     // MeTube UI öffnen
     document.getElementById("btnOpenMetube").addEventListener("click", () => {
@@ -49,6 +44,44 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 });
+
+// Prüft, ob eine URL eine echte YouTube-Playlist ist, und liefert die
+// kanonische Playlist-URL zurück (sonst null).
+//
+// Reines "list=" im Query-String genügt nicht: YouTube hängt an viele
+// Video-Links automatisch Mixes (list=RD...) an. Und "/playlist" steckt
+// auch in Seiten wie /feed/playlists oder /@channel/playlists.
+function getPlaylistUrl(rawUrl) {
+  if (!rawUrl) return null;
+
+  let url;
+  try {
+    url = new URL(rawUrl);
+  } catch (e) {
+    return null;
+  }
+
+  const host = url.hostname.toLowerCase();
+  if (host !== "youtube.com" && host !== "www.youtube.com" &&
+      host !== "m.youtube.com" && host !== "music.youtube.com") {
+    return null;
+  }
+
+  const list = url.searchParams.get("list");
+  if (!list) return null;
+
+  // Automatisch generierte Mixes/Radios sind keine echten Playlists.
+  if (list.startsWith("RD")) return null;
+
+  // Playlist-Seite (youtube.com/playlist?list=...) oder Video, das in
+  // einer Playlist läuft (youtube.com/watch?v=...&list=...).
+  const isPlaylistPage = url.pathname === "/playlist";
+  const isVideoInPlaylist = url.pathname === "/watch" && url.searchParams.get("v");
+
+  if (!isPlaylistPage && !isVideoInPlaylist) return null;
+
+  return `https://www.youtube.com/playlist?list=${encodeURIComponent(list)}`;
+}
 
 async function sendToMetube(baseUrl, payloadData, label) {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -78,55 +111,28 @@ async function sendToMetube(baseUrl, payloadData, label) {
   window.close();
 }
 
-async function sendPlaylistToMetube(baseUrl, tab) {
-  if (!tab || !tab.id) return;
+async function sendPlaylistToMetube(baseUrl, tab, playlistUrl) {
+  if (!tab || !tab.id || !playlistUrl) return;
+
+  const targetApi = `${baseUrl}/add`;
 
   try {
-    const results = await chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      func: () => {
-        const linkElements = document.querySelectorAll(
-          'ytd-playlist-video-renderer a#video-title, a#video-title, ytd-playlist-panel-video-renderer a#wc-endpoint'
-        );
-        return Array.from(linkElements)
-          .map(a => a.href)
-          .filter(href => href && href.includes('watch?v='))
-          .map(href => href.split('&list=')[0])
-          .filter((url, index, self) => self.indexOf(url) === index);
-      }
+    // MeTube bekommt die Playlist-URL selbst und holt alle Einträge über
+    // yt-dlp. Das ist robuster als das Auslesen der YouTube-DOM, die sich
+    // mit jedem YouTube-Redesign ändert.
+    const response = await fetch(targetApi, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url: playlistUrl, quality: "best", format: "mp4" })
     });
 
-    const links = results[0]?.result || [];
-
-    if (links.length === 0) {
-      showToast(tab.id, "Keine Playlist-Videos auf der Seite gefunden.", false);
-      window.close();
-      return;
+    if (response.ok) {
+      showToast(tab.id, "Playlist an MeTube gesendet – die Videos werden nacheinander geladen.", true);
+    } else {
+      showToast(tab.id, `MeTube Server-Fehler (${response.status})`, false);
     }
-
-    showToast(tab.id, `Sende ${links.length} Videos aus der Playlist an MeTube...`, true);
-
-    const targetApi = `${baseUrl}/add`;
-    let successCount = 0;
-
-    for (const videoUrl of links) {
-      try {
-        const response = await fetch(targetApi, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ url: videoUrl, quality: "best", format: "mp4" })
-        });
-        if (response.ok) successCount++;
-      } catch (e) {
-        console.error("Fehler beim Senden von", videoUrl, e);
-      }
-    }
-
-    showToast(tab.id, `Fertig! ${successCount}/${links.length} Playlist-Videos gesendet.`, true);
-
-  } catch (err) {
-    console.error("Fehler beim Auslesen der Playlist:", err);
-    showToast(tab.id, "Fehler beim Auslesen der Playlist.", false);
+  } catch (error) {
+    showToast(tab.id, "Netzwerkfehler: Verbindung zu MeTube fehlgeschlagen", false);
   }
 
   window.close();

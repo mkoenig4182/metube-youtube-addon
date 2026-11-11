@@ -9,7 +9,7 @@ Eine schlanke, plattformübergreifend einsetzbare Browser-Erweiterung (Manifest 
 * **Schnell-Menü bei Linksklick:**
   * 🎬 **als MP4 speichern:** Überträgt das Video im MP4-Format an MeTube.
   * 🎵 **als MP3 speichern:** Extrahiert und speichert nur die Audiospur als MP3.
-  * 📋 **Playlist an MeTube senden:** Extrahiert alle Videos einer geöffneten YouTube-Playlist und überträgt sie direkt an MeTube (wird automatisch auf Playlist-Seiten eingeblendet).
+  * 📋 **Playlist an MeTube senden:** Übergibt die Playlist-URL an MeTube, das alle Videos über yt-dlp nacheinander lädt (Button erscheint nur bei echten Playlist-Links, nicht bei automatischen Mixes).
   * 🌐 **MeTube aufrufen:** Öffnet deine MeTube-Weboberfläche direkt in einem neuen Tab.
   * ⚙️ **Einstellungen:** Schneller Zugriff auf die Konfigurationsseite.
 
@@ -78,7 +78,7 @@ metube-youtube-addon/
 ├── manifest.json      # Erweiterungs-Konfiguration (Manifest V3)
 ├── background.js      # Service Worker & Kontextmenü-Handling
 ├── popup.html         # Aktions-Menü bei Linksklick
-├── popup.js           # Format-Auswahl, Playlist-Extraktion & API-Kommunikation
+├── popup.js           # Format-Auswahl, Playlist-Erkennung & API-Kommunikation
 ├── options.html       # Einstellungsseite & Berechtigungs-UI
 ├── options.js         # Speichern der Instanz-URL & Rechtemanagement
 ├── updates.json       # Auto-Update-Manifest für Firefox
