@@ -22,10 +22,16 @@ Die Versionsnummer wird **immer als Patch-Version erhöht**: `x.x.N` → `x.x.(N
 also z. B. `2.0.7` → `2.0.8`. Keine Minor-/Major-Sprünge, außer es wird
 ausdrücklich anders gewünscht.
 
+Das gilt **nur bei Änderungen an der Erweiterung selbst** (Code, Manifest, UI,
+Assets). Reine Doku- oder Tooling-Änderungen (`AGENTS.md`, `README.md`,
+`build.sh`) lassen die Version unverändert.
+
 Die Nummer steht an **zwei** Stellen und muss überall gleich sein:
 
 - `manifest.json` → `version`
 - `updates.json` → `updates[0].version`
+
+Maßgeblich ist immer der Wert in `manifest.json`.
 
 ## Ablauf bei einer Änderung
 
